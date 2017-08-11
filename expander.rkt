@@ -29,7 +29,7 @@
     [(libre-prod x "/" y) (syntax-protect (syntax/loc caller-stx (/ x y)))]
     [else
      (syntax-protect (raise-syntax-error
-                      'sum-error
+                      'prod-error
                       (format "wrong operator in: ~a" caller-stx)))]))
 
 (define-syntax (libre-bool caller-stx)
