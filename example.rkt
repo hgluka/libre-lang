@@ -4,6 +4,5 @@
 [init bar foo-1]
 [if foo > 0 [while bar > 0
                    [init foo foo*bar]
-                   [init bar bar-1]]
-    [print ""]]
+                   [init bar bar-1]]]
 [if foo > 0 [print foo] [print "Broj je manji od 0"]]

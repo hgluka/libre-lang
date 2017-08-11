@@ -7,6 +7,9 @@ libre-while: /"while" libre-expr libre-stmt+
 libre-if: /"if" libre-expr libre-stmt [libre-stmt]
 @libre-expr: libre-symbol | libre-bool | libre-arit
 libre-bool: libre-expr ("==" | ">" | "<" | "!=") libre-expr
-libre-arit: libre-expr ("+" | "-" | "*" | "/") libre-expr
-@libre-symbol: libre-id | INTEGER | STRING
+@libre-arit: libre-sum
+libre-sum: [libre-sum ("+" | "-")] libre-prod
+libre-prod: [libre-prod ("*" | "/")] libre-number
+@libre-symbol: libre-number | STRING
+@libre-number: libre-id | INTEGER
 @libre-id: ID

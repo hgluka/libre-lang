@@ -3,7 +3,7 @@
 
 (define str #<<HERE
 [init foo ,i] // Komentar
-[init bar foo+5]
+[init bar foo+5*foo/1-1]
 [print foo bar]
 [while bar > 0 [init bar bar-1]]
 [if bar == 1 [print bar] [print "bar nije 1"]]
@@ -14,11 +14,18 @@ HERE
 (check-equal? (parse-to-datum (apply-tokenizer make-tokenizer str))
                 '(libre-prog
                   (libre-init foo ",i")
-                  (libre-init bar (libre-arit foo "+" 5))
+                  (libre-init bar (libre-sum
+                                   (libre-sum
+                                    (libre-sum
+                                     (libre-prod foo)) "+"
+                                    (libre-prod
+                                     (libre-prod
+                                      (libre-prod 5) "*" foo) "/" 1)) "-"
+                                      (libre-prod 1)))
                   (libre-print foo bar)
                   (libre-while
                    (libre-bool bar ">" 0)
-                   (libre-init bar (libre-arit bar "-" 1)))
+                   (libre-init bar (libre-sum (libre-sum (libre-prod bar)) "-" (libre-prod 1))))
                   (libre-if
                    (libre-bool bar "==" 1)
                    (libre-print bar)

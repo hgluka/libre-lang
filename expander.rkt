@@ -4,23 +4,33 @@
          libre-print
          libre-while
          libre-if
-         libre-arit
+         libre-sum
+         libre-prod
          libre-bool
          #%top-interaction
          #%app
          #%datum
          (rename-out [libre-module-begin #%module-begin]))
 
-(define-syntax (libre-arit caller-stx)
+(define-syntax (libre-sum caller-stx)
   (syntax-case caller-stx ()
-    [(libre-arit x "+" y) (syntax-protect (syntax/loc caller-stx (+ x y)))]
-    [(libre-arit x "-" y) (syntax-protect (syntax/loc caller-stx (- x y)))]
-    [(libre-arit x "*" y) (syntax-protect (syntax/loc caller-stx (* x y)))]
-    [(libre-arit x "/" y) (syntax-protect (syntax/loc caller-stx (/ x y)))]
+    [(libre-sum x) (syntax-protect (syntax/loc caller-stx x))]
+    [(libre-sum x "+" y) (syntax-protect (syntax/loc caller-stx (+ x y)))]
+    [(libre-sum x "-" y) (syntax-protect (syntax/loc caller-stx (- x y)))]
     [else
      (syntax-protect (raise-syntax-error
-      'arit-error
+      'sum-error
       (format "wrong operator in: ~a" caller-stx)))]))
+
+(define-syntax (libre-prod caller-stx)
+  (syntax-case caller-stx ()
+    [(libre-prod x) (syntax-protect (syntax/loc caller-stx x))]
+    [(libre-prod x "*" y) (syntax-protect (syntax/loc caller-stx (* x y)))]
+    [(libre-prod x "/" y) (syntax-protect (syntax/loc caller-stx (/ x y)))]
+    [else
+     (syntax-protect (raise-syntax-error
+                      'sum-error
+                      (format "wrong operator in: ~a" caller-stx)))]))
 
 (define-syntax (libre-bool caller-stx)
   (syntax-case caller-stx ()
@@ -74,6 +84,8 @@
 
 (define-syntax (libre-if caller-stx)
   (syntax-case caller-stx ()
+    [(libre-if test s1) (syntax-protect (syntax/loc caller-stx
+                                          (if test s1 '())))]
     [(libre-if test s1 s2) (syntax-protect (syntax/loc caller-stx
                              (if test s1 s2)))]
     [else
@@ -89,7 +101,7 @@
      (with-syntax ([(ids ...) (find-unique-ids #'(stmts ...))])
      #'(#%module-begin
       (define ids 0) ...
-      (parameterize () stmts ...)))]))
+      (begin stmts ...)))]))
 
 (begin-for-syntax
   (require racket/list)
