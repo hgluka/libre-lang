@@ -85,7 +85,7 @@
 (define-syntax (libre-if caller-stx)
   (syntax-case caller-stx ()
     [(libre-if test s1) (syntax-protect (syntax/loc caller-stx
-                                          (if test s1 '())))]
+                                          (if test s1 (void))))]
     [(libre-if test s1 s2) (syntax-protect (syntax/loc caller-stx
                              (if test s1 s2)))]
     [else
