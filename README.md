@@ -10,7 +10,7 @@ Dependencies are:
 ```
 git clone https://github.com/lucantrop/libre-lang
 cd libre-lang
-raco pkg install .
+raco pkg install
 ```
 
 ## Testing
